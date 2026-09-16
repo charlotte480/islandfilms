@@ -6,9 +6,11 @@
   (an HTML iframe element) -> click the element -> Enter Code -> paste this whole file.
 
   Setup:
-  1. Replace YOUTUBE_VIDEO_ID below with your real video ID
-     (the part after "v=" in a youtube.com/watch?v=... URL, or after youtu.be/).
-  2. Set --radius to match the corner radius used elsewhere on your site.
+  1. Video ID is already set to GESq_lsuT7A. To swap it later, replace the
+     VIDEO_ID value in the <script> block below (the part after "v=" in a
+     youtube.com/watch?v=... URL, or after youtu.be/).
+  2. --radius and --accent below are set to reasonable defaults -- adjust to
+     match your site's actual corner radius and brand accent color.
   3. On the Wix canvas, resize the embed element itself to the video's aspect
      ratio (e.g. 16:9) -- the widget fills whatever box Wix gives it.
 
@@ -23,8 +25,8 @@
 <meta charset="utf-8" />
 <style>
   :root {
-    --radius: 20px;       /* match your site's corner radius */
-    --accent: #ff3b30;    /* progress bar fill / play button accent */
+    --radius: 12px;       /* match your site's corner radius */
+    --accent: #2b6cb0;    /* progress bar fill / play button accent */
   }
   html, body {
     margin: 0;
@@ -135,7 +137,7 @@
 
 <script>
 (function () {
-  var VIDEO_ID = 'YOUTUBE_VIDEO_ID'; // <-- replace with your video ID
+  var VIDEO_ID = 'GESq_lsuT7A';
 
   var wrap = document.getElementById('rf-yt-wrap');
   var playBtn = document.getElementById('rf-yt-playbtn');
