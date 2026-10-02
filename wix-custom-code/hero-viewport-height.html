@@ -1,0 +1,57 @@
+<!--
+  Full-viewport hero height for Wix Studio (fixes the small gap left by 100vh).
+
+  Why this isn't Velo page code:
+  Velo runs in a web worker, so it has no access to `window` / `window.innerHeight`,
+  no resize event, and $w() can't set a section's height in pixels. So the
+  measuring is done here (real browser JS) and the sizing is done in CSS
+  (hero-viewport-height.css) via a CSS variable this script keeps updated.
+
+  Setup:
+  1. On each page's hero section, add the custom CSS class `hero-fullheight`
+     (select the section -> CSS Classes panel -> add class). Its Velo ID can
+     stay `#heroSection`; the class is what the CSS targets.
+  2. Paste hero-viewport-height.css into global.css (Code panel -> CSS -> global.css).
+  3. Paste this whole file into:
+     Site Settings -> Custom Code -> + Add Custom Code
+       - Place code in: Head
+       - Add code to pages: All pages -> "Load code once"
+     ("Load code once" is right: Wix keeps the same document across page
+     navigation, so one set of listeners covers every page.)
+
+  Notes:
+  - Custom Code only runs on the published site (needs a Premium plan with a
+    connected domain), not in the editor preview. Until it runs, the CSS falls
+    back to 100dvh / 100vh, so nothing breaks.
+  - Change DEBOUNCE_MS below to tune how long after the last resize event the
+    height is re-measured.
+-->
+<script>
+  (function () {
+    if (window.__heroVhInstalled) return;
+    window.__heroVhInstalled = true;
+
+    var DEBOUNCE_MS = 150;
+    var root = document.documentElement;
+    var lastHeight = -1;
+    var timer;
+
+    function applyHeight() {
+      var h = window.innerHeight;
+      if (h === lastHeight) return;
+      lastHeight = h;
+      root.style.setProperty('--hero-vh', h + 'px');
+    }
+
+    function onResize() {
+      clearTimeout(timer);
+      timer = setTimeout(applyHeight, DEBOUNCE_MS);
+    }
+
+    applyHeight();
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('orientationchange', onResize);
+    // Re-measure when the page is restored from the back/forward cache.
+    window.addEventListener('pageshow', applyHeight);
+  })();
+</script>

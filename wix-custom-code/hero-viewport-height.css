@@ -1,0 +1,23 @@
+/*
+  Paste into Wix Studio global.css. Works with hero-viewport-height.html,
+  which overwrites --hero-vh with the measured window.innerHeight in px.
+
+  Add the class `hero-fullheight` to the hero section on every page that has one.
+*/
+
+/* Fallbacks used until (or if) the script runs. */
+:root {
+  --hero-vh: 100vh;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --hero-vh: 100dvh;
+  }
+}
+
+/* !important is needed to beat the height Wix Studio sets on the section. */
+.hero-fullheight {
+  height: var(--hero-vh) !important;
+  min-height: var(--hero-vh) !important;
+}
